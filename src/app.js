@@ -8,7 +8,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-// Endpoint para listar fornecedores
+// Endpoint para listar fornecedores1
 app.get('/fornecedores', async (req, res) => {
   try {
     const fornecedores = await Fornecedor.findAll();
