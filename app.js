@@ -1,4 +1,4 @@
-require('dotenv').config(); // Carregue as variáveis de ambiente primeiro!
+require('dotenv').config();
 
 const express = require('express');
 const sequelize = require('./src/config/db'); 
@@ -22,29 +22,24 @@ app.get('/fornecedores-por-consumo', async (req, res) => {
   const { consumoMensal } = req.query;
 
   try {
-    // Validar se o consumoMensal foi fornecido e é um número válido
     if (!consumoMensal || isNaN(consumoMensal)) {
       return res.status(400).json({ error: 'O consumo mensal deve ser um número válido.' });
     }
 
-    // Converter o consumoMensal para número
     const consumo = parseFloat(consumoMensal);
 
-    // Buscar fornecedores cujo limite mínimo é menor que o consumo mensal
     const fornecedores = await Fornecedor.findAll({
       where: {
         limiteMinimoKwh: {
-          [Sequelize.Op.lt]: consumo, // limiteMinimoKwh menor que o consumo mensal
+          [Sequelize.Op.lt]: consumo,
         },
       },
     });
 
-    // Verificar se encontramos fornecedores
     if (fornecedores.length === 0) {
       return res.status(404).json({ error: 'Nenhum fornecedor encontrado para o consumo mensal informado.' });
     }
 
-    // Retornar os fornecedores encontrados
     res.json(fornecedores);
   } catch (error) {
     console.error(error);
@@ -57,12 +52,10 @@ app.post('/setFornecedor', async (req, res) => {
   const { nome, logo, estado, custoPorKwh, limiteMinimoKwh, numeroClientes, avaliacaoMedia } = req.body;
 
   try {
-    // Validar os dados antes de salvar
     if (!nome || !estado || !custoPorKwh || !limiteMinimoKwh || !numeroClientes || !avaliacaoMedia) {
       return res.status(400).json({ error: 'Todos os campos obrigatórios devem ser preenchidos' });
     }
 
-    // Criar o fornecedor
     const novoFornecedor = await Fornecedor.create({
       nome,
       logo,

@@ -1,4 +1,3 @@
-// src/models/Fornecedores.js
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
@@ -11,8 +10,8 @@ Fornecedor.init(
       allowNull: false,
     },
     logo: {
-      type: DataTypes.STRING, // Aqui você pode armazenar a URL ou o caminho para o logo
-      allowNull: true, // Logo pode ser opcional
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     estado: {
       type: DataTypes.STRING,
@@ -38,7 +37,7 @@ Fornecedor.init(
   {
     sequelize,
     modelName: 'Fornecedors',
-    timestamps: true, // Para garantir que o createdAt e updatedAt sejam gerados automaticamente
+    timestamps: true,
   }
 );
 
