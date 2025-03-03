@@ -2,6 +2,7 @@ require('dotenv').config(); // Carregue as variáveis de ambiente primeiro!
 
 const express = require('express');
 const sequelize = require('./src/config/db'); 
+const { Sequelize, Op } = require('sequelize');
 const Fornecedor = require('./src/models/Fornecedores');
 
 const app = express();
@@ -13,6 +14,40 @@ app.get('/fornecedores', async (req, res) => {
     const fornecedores = await Fornecedor.findAll();
     res.json(fornecedores);
   } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar fornecedores' });
+  }
+});
+
+app.get('/fornecedores-por-consumo', async (req, res) => {
+  const { consumoMensal } = req.query;
+
+  try {
+    // Validar se o consumoMensal foi fornecido e é um número válido
+    if (!consumoMensal || isNaN(consumoMensal)) {
+      return res.status(400).json({ error: 'O consumo mensal deve ser um número válido.' });
+    }
+
+    // Converter o consumoMensal para número
+    const consumo = parseFloat(consumoMensal);
+
+    // Buscar fornecedores cujo limite mínimo é menor que o consumo mensal
+    const fornecedores = await Fornecedor.findAll({
+      where: {
+        limiteMinimoKwh: {
+          [Sequelize.Op.lt]: consumo, // limiteMinimoKwh menor que o consumo mensal
+        },
+      },
+    });
+
+    // Verificar se encontramos fornecedores
+    if (fornecedores.length === 0) {
+      return res.status(404).json({ error: 'Nenhum fornecedor encontrado para o consumo mensal informado.' });
+    }
+
+    // Retornar os fornecedores encontrados
+    res.json(fornecedores);
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Erro ao buscar fornecedores' });
   }
 });
