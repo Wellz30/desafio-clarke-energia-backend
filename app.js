@@ -18,27 +18,29 @@ app.get('/fornecedores', async (req, res) => {
 });
 
 //Endpoint para cadastrar fornecedor
-app.post('/fornecedores', async (req, res) => {
-  const { nome, estado, custo_por_kwh, limite_minimo_kwh, numero_clientes, avaliacao_media } = req.body;
+app.post('/setFornecedor', async (req, res) => {
+  const { nome, logo, estado, custoPorKwh, limiteMinimoKwh, numeroClientes, avaliacaoMedia } = req.body;
 
   try {
     // Validar os dados antes de salvar
-    if (!nome || !estado || !custo_por_kwh || !limite_minimo_kwh || !numero_clientes || !avaliacao_media) {
-      return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
+    if (!nome || !estado || !custoPorKwh || !limiteMinimoKwh || !numeroClientes || !avaliacaoMedia) {
+      return res.status(400).json({ error: 'Todos os campos obrigatórios devem ser preenchidos' });
     }
 
     // Criar o fornecedor
     const novoFornecedor = await Fornecedor.create({
       nome,
+      logo,
       estado,
-      custo_por_kwh,
-      limite_minimo_kwh,
-      numero_clientes,
-      avaliacao_media,
+      custoPorKwh,
+      limiteMinimoKwh,
+      numeroClientes,
+      avaliacaoMedia,
     });
 
     res.status(201).json(novoFornecedor);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Erro ao cadastrar fornecedor' });
   }
 });
