@@ -2,15 +2,16 @@ const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
 const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASS,
+  process.env.MYSQL_DATABASE,  // Nome do banco de dados
+  process.env.MYSQL_USER,      // Usuário
+  process.env.MYSQL_PASSWORD,  // Senha
   {
-    host: process.env.DB_HOST,
-    dialect: 'mysql',
-    logging: false, // Desativar logs de SQL
+    host: process.env.MYSQL_HOST,   // Host
+    port: process.env.MYSQL_PORT,   // Porta
+    dialect: 'mysql',               // Tipo de banco de dados
   }
 );
+
 
 sequelize.authenticate()
   .then(() => {
