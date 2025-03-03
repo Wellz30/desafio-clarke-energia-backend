@@ -9,7 +9,7 @@ const sequelize = new Sequelize(
     host: process.env.MYSQL_HOST,
     port: process.env.MYSQL_PORT,
     dialect: 'mysql',
-    dialectModule: require("mysql2"), // Isso força o Sequelize a usar mysql2
+    dialectModule: require("mysql2"),
     dialectOptions: {
       ssl: {
         require: true,
