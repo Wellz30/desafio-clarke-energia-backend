@@ -1,11 +1,13 @@
 require('dotenv').config();
 
 const express = require('express');
+const cors = require("cors");
 const sequelize = require('./src/config/db'); 
 const { Sequelize, Op } = require('sequelize');
 const Fornecedor = require('./src/models/Fornecedores');
 
 const app = express();
+app.use(cors()); // Habilita CORS antes das rotas
 app.use(express.json());
 
 // Endpoint para listar fornecedores
