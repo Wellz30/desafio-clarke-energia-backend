@@ -38,10 +38,6 @@ app.get('/fornecedores-por-consumo', async (req, res) => {
       },
     });
 
-    if (fornecedores.length === 0) {
-      return res.status(404).json({ error: 'Nenhum fornecedor encontrado para o consumo mensal informado.' });
-    }
-
     res.json(fornecedores);
   } catch (error) {
     console.error(error);
