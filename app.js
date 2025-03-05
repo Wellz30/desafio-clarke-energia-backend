@@ -7,10 +7,9 @@ const { Sequelize, Op } = require('sequelize');
 const Fornecedor = require('./src/models/Fornecedores');
 
 const app = express();
-app.use(cors()); // Habilita CORS antes das rotas
+app.use(cors());
 app.use(express.json());
 
-// Endpoint para listar fornecedores
 app.get('/fornecedores', async (req, res) => {
   try {
     const fornecedores = await Fornecedor.findAll();
@@ -45,7 +44,6 @@ app.get('/fornecedores-por-consumo', async (req, res) => {
   }
 });
 
-//Endpoint para cadastrar fornecedor
 app.post('/setFornecedor', async (req, res) => {
   const { nome, logo, estado, custoPorKwh, limiteMinimoKwh, numeroClientes, avaliacaoMedia } = req.body;
 
@@ -71,8 +69,6 @@ app.post('/setFornecedor', async (req, res) => {
   }
 });
 
-
-// Sincronizar o banco e rodar o servidor
 sequelize.sync().then(() => {
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
